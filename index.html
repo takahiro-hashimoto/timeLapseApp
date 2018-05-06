@@ -4,45 +4,6 @@
     <meta charset="utf-8">
   </head>
 
-  <style media="screen">
-
-    .calculator {
-      border: 1px solid #ccc;
-      width: 720px;
-    }
-
-    .calculator-header {
-      text-align: center;
-      background-color: #ccc;
-      padding: 20px;
-    }
-
-    .calculator-body {
-      padding: 20px;
-    }
-
-    .calculator-list {
-      padding: 20px;
-    }
-
-    .calculator-item {
-      display: table;
-    }
-
-    .calculator-item > * {
-      display: table-cell;
-    }
-
-    .calculator-footer {
-      border-top: 1px solid #ccc;
-    }
-
-    .calculator-result {
-      padding: 20px;
-    }
-
-  </style>
-
   <body>
 
     <div id="app">
@@ -52,30 +13,30 @@
         </div>
         <div class="calculator-body">
           <dl class="calculator-list">
-            <dt>撮影間隔</p>
+            <dt>撮影間隔<span class="text-note">（最大値は60秒）</span></p>
             <dd>
-              <input v-model="interval" type="range" min="1" max="60" step="1">
-              <span id="js-calculator-interval-value"><input v-model="interval" v-on:blur="convertInterval" type="text">秒</span>
+              <input v-model="intervalVal" type="range" id="js-calculator-interval" min="1" max="60" step="1">
+              <span id="js-calculator-interval-value"><input v-model="intervalVal" v-on:blur="convertInterval" type="text">秒</span>
             </dd>
           </dl>
           <dl class="calculator-list">
-            <dt>撮影枚数</dt>
+            <dt>撮影枚数<span class="text-note">（最大値は999枚）</span></dt>
             <dd>
-              <input type="range" v-model="photoSheets" min="1" max="999" step="1">
-              <span id="js-photo-sheets-value"><input v-model="photoSheets" v-on:blur="convertPhotoSheets" type="text">枚</span>
+              <input type="range" v-model="photoSheetsVal" id="js-photo-sheets" min="1" max="999" step="1">
+              <span id="js-photo-sheets-value"><input v-model="photoSheetsVal" v-on:blur="convertPhotoSheets" type="text">枚</span>
             </dd>
           </dl>
           <dl class="calculator-list">
             <dt>フレームレート</dt>
             <dd class="">
               <label>
-                <input type="radio" v-model="flamerate" value="24" name="flamerate-type">24
+                <input type="radio" v-model="flamerateVal" value="24" name="flamerate-type">24fps
               </label>
               <label>
-                <input type="radio" v-model="flamerate" value="30" name="flamerate-type">30
+                <input type="radio" v-model="flamerateVal" value="30" name="flamerate-type">30fps
               </label>
               <label>
-                <input type="radio" v-model="flamerate" value="60" name="flamerate-type">60
+                <input type="radio" v-model="flamerateVal" value="60" name="flamerate-type">60fps
               </label>
             </dd>
           </dl>
@@ -100,13 +61,13 @@
     var app = new Vue({
       el: '#app',
       data: {
-        interval: 10,
-        photoSheets: 420,
-        flamerate: 24,
+        intervalVal: 10,
+        photoSheetsVal: 420,
+        flamerateVal: 24,
       },
       computed: {
         calculateShootingTime: function (){
-          var time = this.interval * this.photoSheets;
+          var time = this.intervalVal * this.photoSheetsVal;
           var str = "";
           var hour = time / 3600 | 0;
           var min = time % 3600 / 60 | 0;
@@ -131,27 +92,71 @@
         	}
         },
         calculateVideoTime: function (){
-          var videoTime = this.photoSheets / this.flamerate;
+          var videoTime = this.photoSheetsVal / this.flamerateVal;
           var decimalPoint = 2 ;	// 小数点第n位まで残す
           return Math.floor( videoTime * Math.pow( 10, decimalPoint)) / Math.pow( 10, decimalPoint) ;
         }
       },
       methods: {
         convertInterval: function (){
-          if(this.interval > 60) {
+          if(this.intervalVal > 60) {
             alert('撮影間隔の最大値は60秒です');
-            return this.interval = 60;
+            return this.intervalVal = 60;
           }
         },
         convertPhotoSheets: function (){
-          if(this.photoSheets > 999) {
-            alert('撮影枚数の最大値は999枚です');
-            return this.photoSheets = 999;
+          if(this.photoSheetsVal > 999) {
+            alert('撮影枚数の最大値は999です');
+            return this.intervalVal = 999;
           }
         }
       }
     })
     </script>
+
+    <style media="screen">
+
+      .calculator {
+        border: 1px solid #ccc;
+        width: 728px;
+      }
+
+      .calculator-header {
+        text-align: center;
+        background-color: #ccc;
+        padding: 20px;
+      }
+
+      .calculator-body {
+        padding: 20px;
+      }
+
+      .calculator-list {
+        padding: 20px;
+      }
+
+      .calculator-item {
+        display: table;
+      }
+
+      .calculator-item > * {
+        display: table-cell;
+      }
+
+      .calculator-footer {
+        border-top: 1px solid #ccc;
+      }
+
+      .calculator-result {
+        padding: 20px;
+      }
+
+      .text-note {
+        font-size: 12px;
+        color: #333;
+      }
+
+    </style>
 
   </body>
 </html>
