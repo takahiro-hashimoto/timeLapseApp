@@ -2,42 +2,40 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   </head>
-
+  <link type="text/css" media="all" href="https://smartparty.jp/wp-content/cache/autoptimize/css/autoptimize_d405a4b239d0d362d46c6f9c67b5ab1d.css" rel="stylesheet"/>
   <body>
 
     <div id="app">
       <div class="calculator">
         <div class="calculator-header">
-          <p class="calculator-header-title">タイムラプス計算機</p>
+          <p class="calculator-header-title">タイムラプス用計算機</p>
         </div>
         <div class="calculator-body">
           <dl class="calculator-list">
-            <dt>撮影間隔<span class="text-note">（最大値は60秒）</span></p>
+            <dt>撮影間隔<span class="text-note">（最大値は60秒）</span></dt>
             <dd>
-              <input v-model="intervalVal" type="range" id="js-calculator-interval" min="1" max="60" step="1">
-              <span id="js-calculator-interval-value"><input v-model="intervalVal" v-on:blur="convertInterval" type="text">秒</span>
+              <input class="calculator-list-range" v-model="interval" type="range" id="js-calculator-interval" min="1" max="60" step="1">
+              <span class="calculator-list-value"><input class="calculator-list-input" v-model="interval" v-on:blur="convertInterval" type="text">秒</span>
             </dd>
           </dl>
           <dl class="calculator-list">
             <dt>撮影枚数<span class="text-note">（最大値は999枚）</span></dt>
             <dd>
-              <input type="range" v-model="photoSheetsVal" id="js-photo-sheets" min="1" max="999" step="1">
-              <span id="js-photo-sheets-value"><input v-model="photoSheetsVal" v-on:blur="convertPhotoSheets" type="text">枚</span>
+              <input class="calculator-list-range" type="range" v-model="photoSheets" id="js-photo-sheets" min="1" max="999" step="1">
+              <span class="calculator-list-value"><input class="calculator-list-input" v-model="photoSheets" v-on:blur="convertPhotoSheets" type="text">枚</span>
             </dd>
           </dl>
           <dl class="calculator-list">
             <dt>フレームレート</dt>
             <dd class="">
-              <label>
-                <input type="radio" v-model="flamerateVal" value="24" name="flamerate-type">24fps
-              </label>
-              <label>
-                <input type="radio" v-model="flamerateVal" value="30" name="flamerate-type">30fps
-              </label>
-              <label>
-                <input type="radio" v-model="flamerateVal" value="60" name="flamerate-type">60fps
-              </label>
+              <input class="calculator-list-radio" v-model="flamerate" type="radio" name="radio02" value=24 id="radio-24">
+              <label for="radio-24">24fps</label>
+              <input class="calculator-list-radio" v-model="flamerate" type="radio" name="radio02" value=30 id="radio-30">
+              <label for="radio-30">30fps</label>
+              <input class="calculator-list-radio" v-model="flamerate" type="radio" name="radio02" value=60 id="radio-60">
+              <label for="radio-60">60fps</label>
             </dd>
           </dl>
         </div>
@@ -57,17 +55,18 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.2/vue.js"></script>
+
     <script>
     var app = new Vue({
       el: '#app',
       data: {
-        intervalVal: 10,
-        photoSheetsVal: 420,
-        flamerateVal: 24,
+        interval: 10,
+        photoSheets: 420,
+        flamerate: 24,
       },
       computed: {
         calculateShootingTime: function (){
-          var time = this.intervalVal * this.photoSheetsVal;
+          var time = this.interval * this.photoSheets;
           var str = "";
           var hour = time / 3600 | 0;
           var min = time % 3600 / 60 | 0;
@@ -92,22 +91,22 @@
         	}
         },
         calculateVideoTime: function (){
-          var videoTime = this.photoSheetsVal / this.flamerateVal;
-          var decimalPoint = 2 ;	// 小数点第n位まで残す
+          var videoTime = this.photoSheets / this.flamerate;
+          var decimalPoint = 1 ;	// 小数点第n位まで残す
           return Math.floor( videoTime * Math.pow( 10, decimalPoint)) / Math.pow( 10, decimalPoint) ;
         }
       },
       methods: {
         convertInterval: function (){
-          if(this.intervalVal > 60) {
+          if(this.interval > 60) {
             alert('撮影間隔の最大値は60秒です');
-            return this.intervalVal = 60;
+            return this.interval = 60;
           }
         },
         convertPhotoSheets: function (){
-          if(this.photoSheetsVal > 999) {
+          if(this.photoSheets > 999) {
             alert('撮影枚数の最大値は999です');
-            return this.intervalVal = 999;
+            return this.interval = 999;
           }
         }
       }
@@ -118,20 +117,23 @@
 
       .calculator {
         border: 1px solid #ccc;
-        width: 728px;
+        width: 100%;
+        margin: 0 auto;
       }
 
       .calculator-header {
         text-align: center;
         background-color: #ccc;
-        padding: 20px;
+        padding: 10px 0;
+      }
+
+      .calculator-header-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 0 !important;
       }
 
       .calculator-body {
-        padding: 20px;
-      }
-
-      .calculator-list {
         padding: 20px;
       }
 
@@ -147,13 +149,122 @@
         border-top: 1px solid #ccc;
       }
 
+      .calculator-list {
+        width: 100%
+      }
+
+      .calculator-list dt {
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .calculator-list dd {
+        display: table;
+        width: 100%
+      }
+
+      .calculator-list dd > * {
+        display: table-cell;
+        vertical-align: middle;
+      }
+
+      .calculator-list-input {
+        height: 30px !important;
+        text-align: center;
+        width: 3rem !important;
+        display: inline-block !important;
+        margin-bottom: 0 !important;
+      }
+
+      .calculator-list-range[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        background-color: #eaeaea;
+        height: 4px;
+        width: 96%;
+        border-radius: 6px;
+        margin: 12px 18px 0 0;
+      }
+
+      .calculator-list-range[type="range"]:focus,
+      .calculator-list-range[type="range"]:active {
+        outline: none;
+      }
+
+      .calculator-list-range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        cursor: pointer;
+        position: relative;
+        width: 18px;
+        height: 18px;
+        display: block;
+        background-color: #23a8de;
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+      }
+
+      .calculator-list-value {
+        width: 20%;
+      }
+
+      .calculator-list-radio {
+        display: none !important;
+      }
+      .calculator-list-radio + label {
+        padding: 0 20px;
+        position:relative;
+        margin-right: 20px;
+      }
+      .calculator-list-radio + label::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 4px;
+        left: 0;
+        width: 15px;
+        height: 15px;
+        border: 1px solid #999;
+        border-radius: 50%;
+      }
+      .calculator-list-radio:checked + label {
+        color: #23a8de;
+      }
+      .calculator-list-radio:checked + label::after {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 7px;
+        left: 3px;
+        width: 11px;
+        height: 11px;
+        background: #23a8de;
+        border-radius: 50%;
+      }
+
       .calculator-result {
-        padding: 20px;
+        padding: 0 20px;
+      }
+
+      .calculator-result-list {
+        display: table;
+      }
+
+      .calculator-result-list > * {
+        display: table-cell;
+        vertical-align: middle;
+      }
+
+      .calculator-result-list dt {
+        padding-right: 12px;
+        font-weight: bold;
+        color: #333;
       }
 
       .text-note {
-        font-size: 12px;
-        color: #333;
+        font-size: 14px;
+        color: #777;
       }
 
     </style>
