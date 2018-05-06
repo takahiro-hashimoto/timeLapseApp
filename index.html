@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+
+  <style media="screen">
+
+    .calculator {
+      border: 1px solid #ccc;
+      width: 720px;
+    }
+
+    .calculator-header {
+      text-align: center;
+      background-color: #ccc;
+      padding: 20px;
+    }
+
+    .calculator-body {
+      padding: 20px;
+    }
+
+    .calculator-list {
+      padding: 20px;
+    }
+
+    .calculator-item {
+      display: table;
+    }
+
+    .calculator-item > * {
+      display: table-cell;
+    }
+
+    .calculator-footer {
+      border-top: 1px solid #ccc;
+    }
+
+    .calculator-result {
+      padding: 20px;
+    }
+
+  </style>
+
+  <body>
+
+    <div id="app">
+      <div class="calculator">
+        <div class="calculator-header">
+          <p class="calculator-header-title">タイムラプス計算機</p>
+        </div>
+        <div class="calculator-body">
+          <dl class="calculator-list">
+            <dt>撮影間隔</p>
+            <dd>
+              <input v-model="intervalVal" type="range" id="js-calculator-interval" min="1" max="60" step="1">
+              <span id="js-calculator-interval-value"><input v-model="intervalVal" type="text">秒</span>
+            </dd>
+          </dl>
+          <dl class="calculator-list">
+            <dt>撮影枚数</dt>
+            <dd>
+              <input type="range" v-model="photoSheetsVal" id="js-photo-sheets" min="1" max="999" step="1">
+              <span id="js-photo-sheets-value"><input v-model="photoSheetsVal" type="text">枚</span>
+            </dd>
+          </dl>
+          <dl class="calculator-list">
+            <dt>フレームレート</dt>
+            <dd class="">
+              <label>
+                <input type="radio" v-model="flamerateVal" value="24" name="flamerate-type">24
+              </label>
+              <label>
+                <input type="radio" v-model="flamerateVal" value="30" name="flamerate-type">30
+              </label>
+              <label>
+                <input type="radio" v-model="flamerateVal" value="60" name="flamerate-type">60
+              </label>
+            </dd>
+          </dl>
+        </div>
+        <div class="calculator-footer">
+          <div class="calculator-result">
+            <dl class="calculator-result-list">
+              <dt>撮影時間</dt>
+              <dd>{{ calculateShootingTime }}</dd>
+            </dl>
+            <dl class="calculator-result-list">
+              <dt>動画再生時間</dd>
+              <dd>{{ calculateVideoTime }}秒</dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.2/vue.js"></script>
+    <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        intervalVal: 10,
+        photoSheetsVal: 420,
+        flamerateVal: 24,
+      },
+      computed: {
+        calculateShootingTime: function (){
+          var time = this.intervalVal * this.photoSheetsVal;
+          var str = "";
+        	var hour = time / 3600 | 0;
+        	var min = time % 3600 / 60 | 0;
+        	var sec = time % 60;
+
+        	if (hour != 0) {
+        		str = hour + "時間" + padZero(min) + "分" + padZero(sec) + "秒";
+        	} else if (min != 0) {
+        		str = min + "分" + padZero(sec) + "秒";
+        	} else {
+        		str = sec + "秒";
+        	}
+
+          return str;
+
+          //例) 1秒を01秒と表示する
+          function padZero(val) {
+        		if (val < 10) {
+        			return "0" + val;
+        		} else {
+              console.log(val);
+        			return val;
+        		}
+        	}
+        },
+        calculateVideoTime: function (){
+          var videoTime = this.photoSheetsVal / this.flamerateVal;
+          var decimalPoint = 2 ;	// 小数点第n位まで残す
+          return Math.floor( videoTime * Math.pow( 10, decimalPoint)) / Math.pow( 10, decimalPoint) ;
+        }
+      }
+    })
+    </script>
+
+  </body>
+</html>
