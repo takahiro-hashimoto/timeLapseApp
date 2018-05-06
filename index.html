@@ -54,28 +54,28 @@
           <dl class="calculator-list">
             <dt>撮影間隔</p>
             <dd>
-              <input v-model="intervalVal" type="range" id="js-calculator-interval" min="1" max="60" step="1">
-              <span id="js-calculator-interval-value"><input v-model="intervalVal" v-on:blur="convertInterval" type="text">秒</span>
+              <input v-model="interval" type="range" min="1" max="60" step="1">
+              <span id="js-calculator-interval-value"><input v-model="interval" v-on:blur="convertInterval" type="text">秒</span>
             </dd>
           </dl>
           <dl class="calculator-list">
             <dt>撮影枚数</dt>
             <dd>
-              <input type="range" v-model="photoSheetsVal" id="js-photo-sheets" min="1" max="999" step="1">
-              <span id="js-photo-sheets-value"><input v-model="photoSheetsVal" v-on:blur="convertPhotoSheets" type="text">枚</span>
+              <input type="range" v-model="photoSheets" min="1" max="999" step="1">
+              <span id="js-photo-sheets-value"><input v-model="photoSheets" v-on:blur="convertPhotoSheets" type="text">枚</span>
             </dd>
           </dl>
           <dl class="calculator-list">
             <dt>フレームレート</dt>
             <dd class="">
               <label>
-                <input type="radio" v-model="flamerateVal" value="24" name="flamerate-type">24
+                <input type="radio" v-model="flamerate" value="24" name="flamerate-type">24
               </label>
               <label>
-                <input type="radio" v-model="flamerateVal" value="30" name="flamerate-type">30
+                <input type="radio" v-model="flamerate" value="30" name="flamerate-type">30
               </label>
               <label>
-                <input type="radio" v-model="flamerateVal" value="60" name="flamerate-type">60
+                <input type="radio" v-model="flamerate" value="60" name="flamerate-type">60
               </label>
             </dd>
           </dl>
@@ -100,13 +100,13 @@
     var app = new Vue({
       el: '#app',
       data: {
-        intervalVal: 10,
-        photoSheetsVal: 420,
-        flamerateVal: 24,
+        interval: 10,
+        photoSheets: 420,
+        flamerate: 24,
       },
       computed: {
         calculateShootingTime: function (){
-          var time = this.intervalVal * this.photoSheetsVal;
+          var time = this.interval * this.photoSheets;
           var str = "";
           var hour = time / 3600 | 0;
           var min = time % 3600 / 60 | 0;
@@ -131,22 +131,22 @@
         	}
         },
         calculateVideoTime: function (){
-          var videoTime = this.photoSheetsVal / this.flamerateVal;
+          var videoTime = this.photoSheets / this.flamerate;
           var decimalPoint = 2 ;	// 小数点第n位まで残す
           return Math.floor( videoTime * Math.pow( 10, decimalPoint)) / Math.pow( 10, decimalPoint) ;
         }
       },
       methods: {
         convertInterval: function (){
-          if(this.intervalVal > 60) {
+          if(this.interval > 60) {
             alert('撮影間隔の最大値は60秒です');
-            return this.intervalVal = 60;
+            return this.interval = 60;
           }
         },
         convertPhotoSheets: function (){
-          if(this.photoSheetsVal > 999) {
+          if(this.photoSheets > 999) {
             alert('撮影枚数の最大値は999枚です');
-            return this.photoSheetsVal = 999;
+            return this.photoSheets = 999;
           }
         }
       }
