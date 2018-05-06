@@ -55,14 +55,14 @@
             <dt>撮影間隔</p>
             <dd>
               <input v-model="intervalVal" type="range" id="js-calculator-interval" min="1" max="60" step="1">
-              <span id="js-calculator-interval-value"><input v-model="intervalVal" type="text">秒</span>
+              <span id="js-calculator-interval-value"><input v-model="intervalVal" v-on:blur="convertInterval" type="text">秒</span>
             </dd>
           </dl>
           <dl class="calculator-list">
             <dt>撮影枚数</dt>
             <dd>
               <input type="range" v-model="photoSheetsVal" id="js-photo-sheets" min="1" max="999" step="1">
-              <span id="js-photo-sheets-value"><input v-model="photoSheetsVal" type="text">枚</span>
+              <span id="js-photo-sheets-value"><input v-model="photoSheetsVal" v-on:blur="convertPhotoSheets" type="text">枚</span>
             </dd>
           </dl>
           <dl class="calculator-list">
@@ -134,6 +134,20 @@
           var videoTime = this.photoSheetsVal / this.flamerateVal;
           var decimalPoint = 2 ;	// 小数点第n位まで残す
           return Math.floor( videoTime * Math.pow( 10, decimalPoint)) / Math.pow( 10, decimalPoint) ;
+        }
+      },
+      methods: {
+        convertInterval: function (){
+          if(this.intervalVal > 60) {
+            alert('撮影間隔の最大値は60秒です');
+            return this.intervalVal = 60;
+          }
+        },
+        convertPhotoSheets: function (){
+          if(this.photoSheetsVal > 999) {
+            alert('撮影枚数の最大値は999枚です');
+            return this.photoSheetsVal = 999;
+          }
         }
       }
     })
