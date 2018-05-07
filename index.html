@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   </head>
   <link type="text/css" media="all" href="https://smartparty.jp/wp-content/cache/autoptimize/css/autoptimize_d405a4b239d0d362d46c6f9c67b5ab1d.css" rel="stylesheet"/>
+
   <body>
 
     <div id="app">
@@ -54,64 +55,6 @@
       </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.2/vue.js"></script>
-
-    <script>
-    var app = new Vue({
-      el: '#app',
-      data: {
-        interval: 10,
-        photoSheets: 420,
-        flamerate: 24,
-      },
-      computed: {
-        calculateShootingTime: function (){
-          var time = this.interval * this.photoSheets;
-          var str = "";
-          var hour = time / 3600 | 0;
-          var min = time % 3600 / 60 | 0;
-          var sec = time % 60;
-
-          if (hour != 0) {
-            str = hour + "時間" + padZero(min) + "分" + padZero(sec) + "秒";
-          } else if (min != 0) {
-            str = min + "分" + padZero(sec) + "秒";
-          } else {
-            str = sec + "秒";
-          }
-          return str;
-
-          //例) 1秒を01秒と表示する
-          function padZero(val) {
-            if (val < 10) {
-              return "0" + val;
-            } else {
-              return val;
-        		}
-        	}
-        },
-        calculateVideoTime: function (){
-          var videoTime = this.photoSheets / this.flamerate;
-          var decimalPoint = 1 ;	// 小数点第n位まで残す
-          return Math.floor( videoTime * Math.pow( 10, decimalPoint)) / Math.pow( 10, decimalPoint) ;
-        }
-      },
-      methods: {
-        convertInterval: function (){
-          if(this.interval > 60) {
-            alert('撮影間隔の最大値は60秒です');
-            return this.interval = 60;
-          }
-        },
-        convertPhotoSheets: function (){
-          if(this.photoSheets > 999) {
-            alert('撮影枚数の最大値は999です');
-            return this.interval = 999;
-          }
-        }
-      }
-    })
-    </script>
 
     <style media="screen">
 
@@ -268,6 +211,6 @@
       }
 
     </style>
-
+    <script src="dist/bundle.js"></script>
   </body>
 </html>
