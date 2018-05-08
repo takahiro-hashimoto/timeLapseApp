@@ -1,3 +1,5 @@
+import css from '../css/style.css';
+
 var Vue = require('vue');
 var app = new Vue({
   el: '#app',
@@ -48,7 +50,7 @@ var app = new Vue({
     convertPhotoSheets: function (){
       if(this.photoSheets > 999) {
         alert('撮影枚数の最大値は999です');
-        return this.interval = 999;
+        return this.photoSheets = 999;
       }
     }
   }
