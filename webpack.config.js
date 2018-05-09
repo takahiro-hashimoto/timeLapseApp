@@ -8,12 +8,21 @@ module.exports = {
   },
   module: {
     rules: [
-      {test: /\.css$/, use: ['style-loader', 'css-loader']}
+      {
+        test: /\.js$/,
+        include: /src/,
+        loader: 'babel-loader'
+      },
+      {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        loader: ['style-loader', 'css-loader'],
+      },
     ],
   },
   resolve: {
     alias: {
-       'vue': 'vue/dist/vue.js'
-    }
-  }
+      'vue$': 'vue/dist/vue.js'
+    },
+  },
 };

@@ -1,7 +1,7 @@
 import css from '../css/style.css';
 
-var Vue = require('vue');
-var app = new Vue({
+const Vue = require('vue');
+const app = new Vue({
   el: '#app',
   data: {
     interval: 10,
@@ -10,20 +10,20 @@ var app = new Vue({
   },
   computed: {
     calculateShootingTime: function (){
-      var time = this.interval * this.photoSheets;
-      var str = "";
-      var hour = time / 3600 | 0;
-      var min = time % 3600 / 60 | 0;
-      var sec = time % 60;
+      const time = this.interval * this.photoSheets;
+      let timeText = "";
+      const hour = time / 3600 | 0;
+      const min = time % 3600 / 60 | 0;
+      const sec = time % 60;
 
       if (hour != 0) {
-        str = hour + "時間" + padZero(min) + "分" + padZero(sec) + "秒";
+        timeText = hour + "時間" + padZero(min) + "分" + padZero(sec) + "秒";
       } else if (min != 0) {
-        str = min + "分" + padZero(sec) + "秒";
+        timeText = min + "分" + padZero(sec) + "秒";
       } else {
-        str = sec + "秒";
+        timeText = sec + "秒";
       }
-      return str;
+      return timeText;
 
       //例) 1秒を01秒と表示する
       function padZero(val) {
