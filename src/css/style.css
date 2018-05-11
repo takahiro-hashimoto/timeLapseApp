@@ -102,7 +102,7 @@
   margin-right: 20px;
 }
 .calculator-list-radio + label::before {
-  content: "";
+  content: '';
   display: block;
   position: absolute;
   top: 2px;
@@ -116,7 +116,7 @@
   color: #23a8de;
 }
 .calculator-list-radio:checked + label::after {
-  content: "";
+  content: '';
   display: block;
   position: absolute;
   top: 5px;
